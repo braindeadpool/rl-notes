@@ -60,3 +60,21 @@ As per policy improvement theorem, this new greedy policy should be better than 
 Combining above two, we have a recipe for finding optimal policy.
 * Initial policy -> evaluate policy -> improve policy with greedy update -> New policy -> REPEAT
 * $\pi_0 \xrightarrow[]E \nu_{\pi_0} \xrightarrow[]I \pi_1 ... \xrightarrow[]I \pi_* \xrightarrow[]E \nu_*$
+* Algorithm:
+  1. Initialize $V(s) \in \mathcal{R}$, $\pi(s) \in A(s)$ arbitrarily $\forall s \in S$
+  2. Policy evaluation step:
+    * Iteratively evaluate $\nu(s)$ until it doesn't change more than a threshold (approximate convergence).
+  3. Policy improvement step:
+    * Iteratively improve the policy by updating the policy to select the best action for each state under the new state-value function (obtained in step 2.)
+  4. If policy improved, repeat from step 2.
+
+
+##### Value Iteration
+Policy iteration consists of two nested iterative loops - for each iteration of policy, we evaluate it iteratively and then improve it iteratively. However, this can be simplified into a single step by combining the evaluation and improvement steps into a single update rule.
+* $\nu_{k+1}(s) = \max_a E[R_{t+1} + \gamma \nu(S_{t+1}) | S_t = s, A_t = a]
+= \max_a \sum_{s', r} p(s', r | s, a) [r + \gamma \nu_k(s')]$
+This is essentially the Bellman optimality condition used as an update rule.
+* In each policy iteration, you update the value function once for each state - one sweep of update.
+
+##### Asynchronous DP
+When the state space is very very large, it is infeasible to perform one sweep update per policy iteration. In such cases, asynchronous updates can be used where each value function is updated in any order of states - some states are updated multiple times before some others are updated. However, it will converge as long as the algorithm continues to update all states.
